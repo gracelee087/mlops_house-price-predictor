@@ -81,7 +81,7 @@ jobs:
           done
 
       - name: Train the Model
-        run:  |
+        run: |
           mkdir -p models
           python src/models/train_model.py \
             --config configs/model_config.yaml \
@@ -102,18 +102,18 @@ jobs:
 
   build-and-publish:
     needs: model-training
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-   
+
       - name: Download trained model
         uses: actions/download-artifact@v4
         with:
           name: trained-model
           path: models/
-    
+
       - name: Download preprocessor
         uses: actions/download-artifact@v4
         with:
@@ -137,8 +137,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: docker.io/${{ vars.DOCKERHUB_USERNAME }}/house-price-model:latest
-            tags: docker.io/${{ vars.DOCKERHUB_USERNAME }}/house-price-model:latest
-
-
-
-
