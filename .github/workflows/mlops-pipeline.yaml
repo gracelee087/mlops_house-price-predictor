@@ -1,5 +1,5 @@
 # .github/workflows/mlops-pipeline.yml
-name: MLOps Pipeline
+name: 💡 MLOps CI Workflow
 
 on:
   push:
@@ -8,17 +8,22 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  DOCKERHUB_USERNAME: dnflsmsehzj83
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
 jobs:
   data-processing:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11.9"
+          python-version: "3.11.14"
 
       - name: Install dependencies
         run: |
@@ -31,7 +36,7 @@ jobs:
             --input data/raw/house_data.csv \
             --output data/processed/cleaned_house_data.csv
 
-      - name: Engineer features
+      - name: Engineer Features
         run: |
           python src/features/engineer.py \
             --input data/processed/cleaned_house_data.csv \
@@ -53,14 +58,15 @@ jobs:
   model-training:
     needs: data-processing
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11.9"
+          python-version: "3.11.14"
 
       - name: Install dependencies
         run: |
@@ -73,7 +79,7 @@ jobs:
           name: processed-data
           path: data/processed/
 
-      - name: Set up MLflow
+      - name: Setup MLflow
         run: |
           docker pull ghcr.io/mlflow/mlflow:latest
           docker run -d -p 5000:5000 --name mlflow-server ghcr.io/mlflow/mlflow:latest \
@@ -82,10 +88,10 @@ jobs:
       - name: Wait for MLflow to start
         run: |
           for i in {1..10}; do
-            curl -f http://localhost:5000/health || sleep 5;
+            curl -f http://localhost:5000/health || sleep 5
           done
 
-      - name: Train model
+      - name: Train the Model
         run: |
           mkdir -p models
           python src/models/train_model.py \
@@ -108,6 +114,7 @@ jobs:
   build-and-publish:
     needs: model-training
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -131,8 +138,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: docker.io
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -140,7 +147,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: docker.io/${{ vars.DOCKERHUB_USERNAME }}/house-price-model:latest
+          tags:
+            - docker.io/${{ env.DOCKERHUB_USERNAME }}/house-price-model:latest
 # name: 💡 MLOps CI Workflow
 
 # on:
