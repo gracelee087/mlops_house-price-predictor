@@ -139,4 +139,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: docker.io/${{ env.DOCKERHUB_USERNAME }}/house-price-model:latest
+          tags:
+            - docker.io/${{ env.DOCKERHUB_USERNAME }}/house-price-model:latest
