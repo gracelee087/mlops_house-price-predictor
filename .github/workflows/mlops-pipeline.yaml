@@ -136,4 +136,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/house-price-model:latest
+          tags: "${{ vars.DOCKERHUB_USERNAME }}/house-price-model:latest"
