@@ -83,7 +83,7 @@ jobs:
         done
 
       - name: Train the Model
-        run: |
+        run:  |
           mkdir -p models
           python src/models/train_model.py \
             --config configs/model_config.yaml \
