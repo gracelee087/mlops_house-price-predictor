@@ -33,6 +33,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+Instrumentator().instrument(app).expose(app)  #  Add this
+
 # Health check endpoint
 @app.get("/health", response_model=dict)
 async def health_check():
