@@ -24,7 +24,7 @@ house-price-predictor/
 │   ├── features/           # Feature engineering pipeline
 │   ├── models/             # Model training and evaluation
 ├── requirements.txt        # Python dependencies
-└── README.md               # You’re here!
+
 ```
 
 ---
@@ -164,24 +164,5 @@ curl -X POST "http://localhost:8000/predict" \
 Be sure to replace `http://localhost:8000/predict` with actual endpoint based on where its running. 
 
 
-## 🧠 Learn More About MLOps
 
-This project is part of the [**MLOps Bootcamp**](https://schoolofdevops.com) at School of DevOps, where you'll learn how to:
 
-- Build and track ML pipelines
-- Containerize and deploy models
-- Automate training workflows using GitHub Actions or Argo Workflows
-- Apply DevOps principles to Machine Learning systems
-
-🔗 [Get Started with MLOps →](https://schoolofdevops.com)
-
----
-
-## 🤝 Contributing
-
-We welcome contributions, issues, and suggestions to make this project even better. Feel free to fork, explore, and raise PRs!
-
----
-
-Happy Learning!  
-— Team **School of DevOps**
